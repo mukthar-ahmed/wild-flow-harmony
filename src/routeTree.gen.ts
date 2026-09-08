@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApprovalsRouteImport } from './routes/approvals'
 import { Route as ExceptionsRouteImport } from './routes/exceptions'
+import { Route as PurchaseOrdersIndexRouteImport } from './routes/purchase-orders/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const ExceptionsRoute = ExceptionsRouteImport.update({
   path: '/exceptions',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PurchaseOrdersIndexRoute = PurchaseOrdersIndexRouteImport.update({
+  id: '/purchase-orders/',
+  path: '/purchase-orders/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/approvals': typeof ApprovalsRoute
   '/exceptions': typeof ExceptionsRoute
+  '/purchase-orders/': typeof PurchaseOrdersIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/approvals': typeof ApprovalsRoute
   '/exceptions': typeof ExceptionsRoute
+  '/purchase-orders': typeof PurchaseOrdersIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/approvals': typeof ApprovalsRoute
   '/exceptions': typeof ExceptionsRoute
+  '/purchase-orders/': typeof PurchaseOrdersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/approvals' | '/exceptions'
+  fullPaths: '/' | '/approvals' | '/exceptions' | '/purchase-orders/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/approvals' | '/exceptions'
-  id: '__root__' | '/' | '/approvals' | '/exceptions'
+  to: '/' | '/approvals' | '/exceptions' | '/purchase-orders'
+  id: '__root__' | '/' | '/approvals' | '/exceptions' | '/purchase-orders/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApprovalsRoute: typeof ApprovalsRoute
   ExceptionsRoute: typeof ExceptionsRoute
+  PurchaseOrdersIndexRoute: typeof PurchaseOrdersIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExceptionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/purchase-orders/': {
+      id: '/purchase-orders/'
+      path: '/purchase-orders'
+      fullPath: '/purchase-orders/'
+      preLoaderRoute: typeof PurchaseOrdersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApprovalsRoute: ApprovalsRoute,
   ExceptionsRoute: ExceptionsRoute,
+  PurchaseOrdersIndexRoute: PurchaseOrdersIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
